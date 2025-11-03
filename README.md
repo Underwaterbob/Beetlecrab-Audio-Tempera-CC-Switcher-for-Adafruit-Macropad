@@ -12,7 +12,7 @@ I don't really have a good name for this project.
 
 The first thing you're going to want to do if you want to run this code on your Macropad is to install Circuitpython on it.
 
-It's very easy to do. There's a guide here: https://learn.adafruit.com/cnc-rotary-macropad/circuitpython
+It's very easy to do. There's a guide here: https://learn.adafruit.com/adafruit-macropad-rp2040/circuitpython
 
 Once you've done that, just plop code.py from the repository here onto the drive that it mounts as and you should be good to go. 
 
