@@ -42,25 +42,39 @@ track volumes, FX settings, etc. at a later date as well.)
 The current existing accessible CCs are:
 
 1vo = emitter 1 volume
+
 1ln = emitter 1 grain length
+
 1dn = emitter 1 grain density
+
 1ge = emitter 1 grain envelope
+
 1pn = emitter 1 panning
+
 1tn = emitter 1 tuning
+
 1ov = emitter 1 octave
+
 1rx = emitter 1 relative X
+
 1ry = emitter 1 relative Y
+
 1sx = emitter 1 spray X
+
 1sy = emitter 1 spray Y
+
 1tw = emitter 1 tone width
+
 1tc = emitter 1 tone center
+
 1fx = emitter 1 effects send
+
 
 Then, each of these again for emitters 2-4 just replacing the "1" with the emitter number.
 Each CC setting also has a color associated with it that the LED is lit to when you choose it. ie choose 1vo for emitter 1's volume, and the key will be blue. Choose 2vo for a key, and it will be red for emitter 2. etc.
 
-Adding more to this list is trivial. I just kept it to the most useful (IMO) CCs accessible. If you know anything about code, you can probably add or remove items from this list as you see fit. Just be careful as the array that contains all these values has two other
-arrays at the end that contain settings for the set up keys and you would have to adjust reference to those elsewhere in the code.
+Adding more to this list is trivial. I just kept it to the most useful (IMO) CCs accessible. If you know anything about code, you can probably add or remove items from this list as you see fit. Just be careful as the array of arrays that contains all these values has two other
+arrays at the end that contain settings for the scene keys and you would have to adjust reference to those elsewhere in the code if the length of the array changes.
 
 Clicking the encoder again brings it back to perform mode.
 
