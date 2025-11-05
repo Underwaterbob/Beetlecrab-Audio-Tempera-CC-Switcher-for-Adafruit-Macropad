@@ -14,7 +14,15 @@ The first thing you're going to want to do if you want to run this code on your 
 
 It's very easy to do. There's a guide here: https://learn.adafruit.com/adafruit-macropad-rp2040/circuitpython
 
-Once you've done that, just plop code.py from the repository here onto the drive that it mounts as and you should be good to go. 
+After that, you have to put some libraries that the code uses into the/lib folder on the Macropad.
+
+They are: adafruit_display_text, adafruit_hid, adafruit_midi, adfruit_debouncer, adafruit_macropad, adafruit_simple_text_display, adafruit_ticks, and neopixel.
+
+They are all in the adafruit-circuitpython-bundle-10.x-mpy-20251105.zip that you can download here: https://circuitpython.org/libraries
+
+
+
+Once you've done that, just plop code.py from the repository here onto the root of the drive that it mounts as and you should be good to go.
 
 Now, onto how to use it!
 
