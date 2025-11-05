@@ -8,6 +8,9 @@ I can usually make it work. I also like to swear in comments, though I have curb
 
 //DISCLAIMER
 
+**Version, uhh, 2? Is now live! Macropad saves it's state on set up exit. All assigned CCs and CC values in each scene. Woohoo! Also, there are more sensical default
+values for each CC, and each key defaults to said values as you change them. Woohoo again!**
+
 I don't really have a good name for this project.
 
 The first thing you're going to want to do if you want to run this code on your Macropad is to install Circuitpython on it.
