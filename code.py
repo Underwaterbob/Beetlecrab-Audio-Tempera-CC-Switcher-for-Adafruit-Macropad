@@ -77,12 +77,19 @@ print(key_param)
 
 # gettings values back into cc_vals a little more complicated
 new_arr = list(microcontroller.nvm[0:60])
+print(new_arr)
 
-k = 0
-for i in range(0, 3, 1):
-    for j in range(0, 11, 1):
-        cc_vals[i][j] = new_arr[k+12]
-        k += 1
+i = 0
+for i in range(0, 11, 1):
+    cc_vals[0][i] = new_arr[i+12]
+    cc_vals[1][i] = new_arr[i+24]
+    cc_vals[2][i] = new_arr[i+36]
+    cc_vals[3][i] = new_arr[i+48]
+
+    #j = 0
+    #for j in range(0, 11, 1):
+    #    cc_vals[i][j] = new_arr[k+12]
+    #    k += 1
 print(cc_vals)
 
 # Scene indicator
@@ -209,6 +216,7 @@ while True:
     # populate the LED colors
 
     if boot:
+        i = 0
         for i in range(0, 11, 1):
             macropad.pixels[i] = tempera_ccs[key_param[i]][2]
         boot = False
@@ -221,14 +229,32 @@ while True:
             macropad.pixels[scIndex * 3 + 2] = pressed
             name_ref = 0
             # OK an attempt to make a bytearray of cc_vals and key_param.
-            ba = bytearray(key_param)
-            for i in range(0, 4, 1):
-                ba += bytearray(cc_vals[i])
+            temp_arr = []
+            print(temp_arr)
+            print(key_param)
+            temp_arr += key_param
+            print("temp_arr")
+            print(temp_arr)
+            #i = 0
+            #for i in range(0, 3, 1):
+            #    temp_arr += cc_vals[i]
+            #    print(temp_arr)
+            # new trial
+            temp_arr += cc_vals[0]
+            print(temp_arr)
+            temp_arr += cc_vals[1]
+            print(temp_arr)
+            temp_arr += cc_vals[2]
+            print(temp_arr)
+            temp_arr += cc_vals[3]
+            print(temp_arr)
+            ba = bytearray(temp_arr)
             print(list(ba))
-            # write values to nvm
             print(len(ba))
+            # write values to nvm
             microcontroller.nvm[0:60] = ba
             print("crud")
+            print(cc_vals)
         else:
             macropad.pixels[scIndex * 3 + 2] = offColor
             name_ref = 1
@@ -279,6 +305,7 @@ while True:
 
     if macropad.encoder != last_knob_pos:
         if set_up:
+            i = 0
             for i in range(0, 11, 1):
                 if key_state[i]:
                     if i != 2 and i != 5 and i != 8 and i != 11:
@@ -292,6 +319,7 @@ while True:
                 chan += macropad.encoder - last_knob_pos
                 chan = min(max(chan, 0), 15)
         else:
+            i = 0
             for i in range(0, 11, 1):
                 if key_state[i]:
                     cc_vals[scIndex][i] += macropad.encoder - last_knob_pos
@@ -320,3 +348,4 @@ while True:
     text_lines[3].text = f"{tempera_ccs[key_param[6]][1]}: {cc_vals[scIndex][6]:{0}{3}}  {tempera_ccs[key_param[7]][1]}: {cc_vals[scIndex][7]:{0}{3}}"
     text_lines[4].text = f"{tempera_ccs[key_param[9]][1]}: {cc_vals[scIndex][9]:{0}{3}}  {tempera_ccs[key_param[10]][1]}: {cc_vals[scIndex][10]:{0}{3}}"
     text_lines.show()
+
