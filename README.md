@@ -8,6 +8,9 @@ I can usually make it work. I also like to swear in comments, though I have curb
 
 //DISCLAIMER
 
+** Up to version 3, now. Saves are fixed and fixed again. MIDI channel now also saves on set up exit. I've added FX parameters: reverb, delay, and chorus mix controls, as well as
+filter cutoff and resonance. I've also added modulator amounts 1-10. Orange keys for the former, purple keys for the latter. **
+
 **Version, uhh, 2? Is now live! Macropad saves it's state on set up exit. All assigned CCs and CC values in each scene. Woohoo! Also, there are more sensical default
 values for each CC, and each key defaults to said values as you change them. Woohoo again!**
 
