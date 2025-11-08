@@ -73,6 +73,9 @@ for i in range(0, 4, 1):
 
 chan = new_arr[60]
 
+print("Data Loaded:")
+print(new_arr)
+
 # Scene indicator
 
 scIndex = 0
@@ -198,6 +201,8 @@ while True:
             ba = bytearray(temp_arr)
             # write values to nvm
             microcontroller.nvm[0:61] = ba
+            print("Data Saved:")
+            print(temp_arr)
         else:
             macropad.pixels[scIndex * 3 + 2] = offColor
             name_ref = 1
@@ -212,11 +217,12 @@ while True:
                 key_state[key] = True
                 if not set_up:
                     macropad.pixels[key] = pressed
-                    for i in range(0, 4, 1):
-                        if key == ((3 * i) + 2):
-                            scIndex = i
-                        else:
-                            macropad.pixels[(3*i)+2] = offColor
+                    if key == 2 or key == 5 or key == 8 or key == 11:
+                        for i in range(0, 4, 1):
+                            if key == ((3*i)+2):
+                                scIndex = i
+                            else:
+                                macropad.pixels[(3*i)+2] = offColor
             if key_event.released:
                 key = key_event.key_number
                 key_state[key] = False
