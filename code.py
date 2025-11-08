@@ -62,7 +62,6 @@ new_arr = list(microcontroller.nvm[0:61])
 
 for i in range(0, 12, 1):
     key_param[i] = new_arr[i]
-print(key_param)
 
 k = 0
 for i in range(0, 4, 1):
@@ -185,7 +184,7 @@ name_ref = 0
 
 # Don't forget to assign cc_nums
 for i in range(0, 12, 1):
-    cc_nums[i] = tempera_ccs[key_param[i]]
+    cc_nums[i] = tempera_ccs[key_param[i]][0]
 
 # Key brightness.
 macropad.pixels.brightness = 0.2
