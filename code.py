@@ -183,6 +183,10 @@ name_arr = [
 
 name_ref = 0
 
+# Don't forget to assign cc_nums
+for i in range(0, 12, 1):
+    cc_nums[i] = tempera_ccs[key_param[i]]
+
 # Key brightness.
 macropad.pixels.brightness = 0.2
 
