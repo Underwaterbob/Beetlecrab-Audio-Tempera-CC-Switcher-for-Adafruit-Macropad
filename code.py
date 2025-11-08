@@ -53,22 +53,9 @@ cc_vals = [
         [64, 64, 0, 64, 64, 0, 64, 64, 0, 64, 64, 0]
 ]
 
-# Array of key parameters
+# Array of key parameter references.
 
-key_param = [
-            7,
-            8,
-            56,
-            21,
-            22,
-            57,
-            35,
-            36,
-            57,
-            49,
-            50,
-            57
-]
+key_param = [7, 8, 56, 21, 22, 57, 35, 36, 57, 49, 50, 57]
 
 # put the values in nvm into those two arrays to load last settings saved.
 key_param = list(microcontroller.nvm[0:12])
