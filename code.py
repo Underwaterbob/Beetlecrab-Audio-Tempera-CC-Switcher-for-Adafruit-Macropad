@@ -53,16 +53,16 @@ cc_vals = [
         [64, 64, 0, 64, 64, 0, 64, 64, 0, 64, 64, 0]
 ]
 
-# Array of key parameter references.
+# Default array of key parameter references.
 
 key_param = [12, 13, 71, 26, 27, 72, 40, 41, 72, 54, 55, 72]
 
-
-# put the values in nvm into those two arrays to load last settings saved.
-key_param = list(microcontroller.nvm[0:12])
-
 # gettings values back into cc_vals a little more complicated
 new_arr = list(microcontroller.nvm[0:61])
+
+for i in range(0, 12, 1):
+    key_param[i] = new_arr[i]
+print(key_param)
 
 k = 0
 for i in range(0, 4, 1):
@@ -71,12 +71,7 @@ for i in range(0, 4, 1):
         k += 1
 
 # Saved MIDI channel
-
 chan = new_arr[60]
-
-print("Data Loaded:")
-print(new_arr)
-
 
 # Scene indicator
 
