@@ -68,7 +68,6 @@ for i in range(0, 4, 1):
     for j in range(0, 12, 1):
         cc_vals[i][j] = new_arr[k+12]
         k += 1
-print(cc_vals)
 
 # Saved MIDI channel
 
