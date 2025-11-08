@@ -55,7 +55,8 @@ cc_vals = [
 
 # Array of key parameter references.
 
-key_param = [7, 8, 56, 21, 22, 57, 35, 36, 57, 49, 50, 57]
+key_param = [12, 13, 71, 26, 27, 72, 40, 41, 72, 54, 55, 72]
+
 
 # put the values in nvm into those two arrays to load last settings saved.
 key_param = list(microcontroller.nvm[0:12])
@@ -76,6 +77,7 @@ chan = new_arr[60]
 print("Data Loaded:")
 print(new_arr)
 
+
 # Scene indicator
 
 scIndex = 0
@@ -92,6 +94,8 @@ emitter3Color = 0xF7FF00
 emitter4Color = 0x00FF50
 offColor = 0x000000
 pressed = 0xFFFFFF
+modulator = 0x330066
+effect = 0xDD3300
 
 # set up mode checker.
 
@@ -100,64 +104,79 @@ set_up = False
 # all of the CCs that I need to be able to switch to. Just emitters for now. FX later if things work out.
 
 tempera_ccs = [
-            [40, "1vo", emitter1Color, 80], #0
-            [41, "1ln", emitter1Color, 16], #1
-            [43, "1dn", emitter1Color, 8], #2
-            [44, "1ge", emitter1Color, 64], #3
-            [46, "1pn", emitter1Color, 64], #4
-            [47, "1tn", emitter1Color, 0], #5
-            [48, "1ov", emitter1Color, 64], #6
-            [49, "1rx", emitter1Color, 64], #7
-            [50, "1ry", emitter1Color, 64], #8
-            [51, "1sx", emitter1Color, 0], #9
-            [52, "1sy", emitter1Color, 0], #10
-            [53, "1tw", emitter1Color, 127], #11
-            [54, "1tc", emitter1Color, 64], #12
-            [55, "1fx", emitter1Color, 127], #13
-            [56, "2vo", emitter2Color, 80], #14
-            [57, "2ln", emitter2Color, 16], #15
-            [59, "2dn", emitter2Color, 8], #16
-            [60, "2ge", emitter2Color, 64], #17
-            [62, "2pn", emitter2Color, 64], #18
-            [63, "2tn", emitter2Color, 0], #19
-            [65, "2ov", emitter2Color, 64], #20
-            [67, "2rx", emitter2Color, 64], #21
-            [68, "2ry", emitter2Color, 64], #22
-            [69, "2sx", emitter2Color, 0], #23
-            [70, "2sy", emitter2Color, 0], #24
-            [72, "2tw", emitter2Color, 127], #25
-            [73, "2tc", emitter2Color, 64], #26
-            [75, "2fx", emitter2Color, 127], #27
-            [76, "3vo", emitter3Color, 80], #28
-            [77, "3ln", emitter3Color, 16], #29
-            [79, "3dn", emitter3Color, 8], #30
-            [80, "3ge", emitter3Color, 64], #31
-            [82, "3pn", emitter3Color, 64], #32
-            [83, "3tn", emitter3Color, 0], #33
-            [84, "3ov", emitter3Color, 64], #34
-            [85, "3rx", emitter3Color, 64], #35
-            [86, "3ry", emitter3Color, 64], #36
-            [87, "3sx", emitter3Color, 0], #37
-            [88, "3sy", emitter3Color, 0], #38
-            [89, "3tw", emitter3Color, 127], #39
-            [90, "3tc", emitter3Color, 64], #40
-            [91, "3fx", emitter3Color, 127], #41
-            [92, "4vo", emitter4Color, 80], #42
-            [93, "4ln", emitter4Color, 16], #43
-            [95, "4dn", emitter4Color, 8], #44
-            [96, "4ge", emitter4Color, 64], #45
-            [98, "4pn", emitter4Color, 64], #46
-            [99, "4tn", emitter4Color, 0], #47
-            [102, "4ov", emitter4Color, 64],#48
-            [103, "4rx", emitter4Color, 64],#49
-            [104, "4ry", emitter4Color, 64],#50
-            [105, "4sx", emitter4Color, 0],#51
-            [106, "4sy", emitter4Color, 0],#52
-            [107, "4tw", emitter4Color, 127],#53
-            [108, "4tc", emitter4Color, 64],#54
-            [109, "4fx", emitter4Color, 127],#55
-            [0, "S:", pressed, 0],        #56
-            [0, "S:", offColor, 0]        #57
+            [18, "rmx", effect, 0], #0
+            [23, "dmx", effect, 0], #1
+            [29, "cmx", effect, 0], #2
+            [24, "fcu", effect, 127], #3
+            [25, "fre", effect, 64], #4
+            [40, "1vo", emitter1Color, 80], #5
+            [41, "1ln", emitter1Color, 16], #6
+            [43, "1dn", emitter1Color, 8], #7
+            [44, "1ge", emitter1Color, 64], #8
+            [46, "1pn", emitter1Color, 64], #9
+            [47, "1tn", emitter1Color, 0], #10
+            [48, "1ov", emitter1Color, 64], #11
+            [49, "1rx", emitter1Color, 64], #12
+            [50, "1ry", emitter1Color, 64], #13
+            [51, "1sx", emitter1Color, 0], #14
+            [52, "1sy", emitter1Color, 0], #15
+            [53, "1tw", emitter1Color, 127], #16
+            [54, "1tc", emitter1Color, 64], #17
+            [55, "1fx", emitter1Color, 127], #18
+            [56, "2vo", emitter2Color, 80], #19
+            [57, "2ln", emitter2Color, 16], #20
+            [59, "2dn", emitter2Color, 8], #21
+            [60, "2ge", emitter2Color, 64], #22
+            [62, "2pn", emitter2Color, 64], #23
+            [63, "2tn", emitter2Color, 0], #24
+            [65, "2ov", emitter2Color, 64], #25
+            [67, "2rx", emitter2Color, 64], #26
+            [68, "2ry", emitter2Color, 64], #27
+            [69, "2sx", emitter2Color, 0], #28
+            [70, "2sy", emitter2Color, 0], #29
+            [72, "2tw", emitter2Color, 127], #30
+            [73, "2tc", emitter2Color, 64], #31
+            [75, "2fx", emitter2Color, 127], #32
+            [76, "3vo", emitter3Color, 80], #33
+            [77, "3ln", emitter3Color, 16], #34
+            [79, "3dn", emitter3Color, 8], #35
+            [80, "3ge", emitter3Color, 64], #36
+            [82, "3pn", emitter3Color, 64], #37
+            [83, "3tn", emitter3Color, 0], #38
+            [84, "3ov", emitter3Color, 64], #39
+            [85, "3rx", emitter3Color, 64], #40
+            [86, "3ry", emitter3Color, 64], #41
+            [87, "3sx", emitter3Color, 0], #42
+            [88, "3sy", emitter3Color, 0], #43
+            [89, "3tw", emitter3Color, 127], #44
+            [90, "3tc", emitter3Color, 64], #45
+            [91, "3fx", emitter3Color, 127], #46
+            [92, "4vo", emitter4Color, 80], #47
+            [93, "4ln", emitter4Color, 16], #48
+            [95, "4dn", emitter4Color, 8], #49
+            [96, "4ge", emitter4Color, 64], #50
+            [98, "4pn", emitter4Color, 64], #51
+            [99, "4tn", emitter4Color, 0], #52
+            [102, "4ov", emitter4Color, 64],#53
+            [103, "4rx", emitter4Color, 64],#54
+            [104, "4ry", emitter4Color, 64],#55
+            [105, "4sx", emitter4Color, 0],#56
+            [106, "4sy", emitter4Color, 0],#57
+            [107, "4tw", emitter4Color, 127],#58
+            [108, "4tc", emitter4Color, 64],#59
+            [109, "4fx", emitter4Color, 127],#60
+            [110, "M01", modulator, 0], #61
+            [111, "M02", modulator, 0], #62
+            [112, "M03", modulator, 0], #63
+            [113, "M04", modulator, 0], #64
+            [114, "M05", modulator, 0], #65
+            [115, "M06", modulator, 0], #66
+            [116, "M07", modulator, 0], #67
+            [117, "M08", modulator, 0], #68
+            [118, "M09", modulator, 0], #69
+            [119, "M10", modulator, 0], #70
+            [0, "S:", pressed, 0],        #71
+            [0, "S:", offColor, 0]        #72
 ]
 
 # name for title
@@ -170,7 +189,7 @@ name_arr = [
 name_ref = 0
 
 # Key brightness.
-macropad.pixels.brightness = 0.1
+macropad.pixels.brightness = 0.2
 
 # Set up text display?
 text_lines = macropad.display_text()
@@ -238,7 +257,7 @@ while True:
                 if key_state[i]:
                     if i != 2 and i != 5 and i != 8 and i != 11:
                         key_param[i] += macropad.encoder - last_knob_pos
-                        key_param[i] = min(max(key_param[i], 0), 55)
+                        key_param[i] = min(max(key_param[i], 0), 70)
                         macropad.pixels[i] = tempera_ccs[key_param[i]][2]
                         cc_nums[i] = tempera_ccs[key_param[i]][0]
                         for j in range(0, 4, 1):
