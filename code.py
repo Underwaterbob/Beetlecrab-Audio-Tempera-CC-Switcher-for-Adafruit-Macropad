@@ -15,10 +15,6 @@ macropad = MacroPad()
 
 boot = True
 
-# encoder delta
-
-#enc_del = 0
-
 # array of keystate booleans
 
 key_state = [
@@ -35,6 +31,10 @@ key_state = [
         False,
         False
 ]
+
+# for iterating through CCs
+
+key_ind = [0, 1, 3, 4, 6, 7, 9, 10]
 
 # MIDI channel defaults to 4 because of my Tempera habits. Which is 3 because of zero indexing.
 
@@ -70,27 +70,22 @@ key_param = [
             57
 ]
 
-# put the values in nvm into those two arrays to load last settings saved  WTFFF!
-
+# put the values in nvm into those two arrays to load last settings saved.
 key_param = list(microcontroller.nvm[0:12])
-print(key_param)
 
 # gettings values back into cc_vals a little more complicated
-new_arr = list(microcontroller.nvm[0:60])
-print(new_arr)
+new_arr = list(microcontroller.nvm[0:61])
 
-i = 0
-for i in range(0, 11, 1):
-    cc_vals[0][i] = new_arr[i+12]
-    cc_vals[1][i] = new_arr[i+24]
-    cc_vals[2][i] = new_arr[i+36]
-    cc_vals[3][i] = new_arr[i+48]
-
-    #j = 0
-    #for j in range(0, 11, 1):
-    #    cc_vals[i][j] = new_arr[k+12]
-    #    k += 1
+k = 0
+for i in range(0, 4, 1):
+    for j in range(0, 12, 1):
+        cc_vals[i][j] = new_arr[k+12]
+        k += 1
 print(cc_vals)
+
+# Saved MIDI channel
+
+chan = new_arr[60]
 
 # Scene indicator
 
@@ -175,22 +170,6 @@ tempera_ccs = [
             [0, "S:", pressed, 0],        #56
             [0, "S:", offColor, 0]        #57
 ]
-# array of the colors
-
-key_colors = [
-    emitter1Color,
-    emitter1Color,
-    offColor,
-    emitter2Color,
-    emitter2Color,
-    offColor,
-    emitter3Color,
-    emitter3Color,
-    offColor,
-    emitter4Color,
-    emitter4Color,
-    offColor,
-]
 
 # name for title
 
@@ -210,16 +189,11 @@ text_lines = macropad.display_text()
 # knob position
 last_knob_pos = macropad.encoder
 
+# Paint the LEDs!
+for i in range(0, 12, 1):
+    macropad.pixels[i] = tempera_ccs[key_param[i]][2]
+
 while True:
-
-    # Check to see if this is the first time through and
-    # populate the LED colors
-
-    if boot:
-        i = 0
-        for i in range(0, 11, 1):
-            macropad.pixels[i] = tempera_ccs[key_param[i]][2]
-        boot = False
 
     # check for set up mode
     macropad.encoder_switch_debounced.update()
@@ -230,31 +204,14 @@ while True:
             name_ref = 0
             # OK an attempt to make a bytearray of cc_vals and key_param.
             temp_arr = []
-            print(temp_arr)
-            print(key_param)
             temp_arr += key_param
-            print("temp_arr")
-            print(temp_arr)
             #i = 0
-            #for i in range(0, 3, 1):
-            #    temp_arr += cc_vals[i]
-            #    print(temp_arr)
-            # new trial
-            temp_arr += cc_vals[0]
-            print(temp_arr)
-            temp_arr += cc_vals[1]
-            print(temp_arr)
-            temp_arr += cc_vals[2]
-            print(temp_arr)
-            temp_arr += cc_vals[3]
-            print(temp_arr)
+            for i in range(0, 4, 1):
+                temp_arr += cc_vals[i]
+            temp_arr.append(chan)
             ba = bytearray(temp_arr)
-            print(list(ba))
-            print(len(ba))
             # write values to nvm
-            microcontroller.nvm[0:60] = ba
-            print("crud")
-            print(cc_vals)
+            microcontroller.nvm[0:61] = ba
         else:
             macropad.pixels[scIndex * 3 + 2] = offColor
             name_ref = 1
@@ -269,32 +226,11 @@ while True:
                 key_state[key] = True
                 if not set_up:
                     macropad.pixels[key] = pressed
-                    if key == 2:
-                        #macropad.pixels[2] = pressed
-                        macropad.pixels[5] = offColor
-                        macropad.pixels[8] = offColor
-                        macropad.pixels[11] = offColor
-                        scIndex = 0
-                    elif key == 5:
-                        macropad.pixels[2] = offColor
-                        #macropad.pixels[5] = pressed
-                        macropad.pixels[8] = offColor
-                        macropad.pixels[11] = offColor
-                        scIndex = 1
-                    elif key == 8:
-                        macropad.pixels[2] = offColor
-                        macropad.pixels[5] = offColor
-                        #macropad.pixels[8] = pressed
-                        macropad.pixels[11] = offColor
-                        scIndex = 2
-                    elif key == 11:
-                        macropad.pixels[2] = offColor
-                        macropad.pixels[5] = offColor
-                        macropad.pixels[8] = offColor
-                        #macropad.pixels[11] = pressed
-                        scIndex = 3
-
-
+                    for i in range(0, 4, 1):
+                        if key == ((3 * i) + 2):
+                            scIndex = i
+                        else:
+                            macropad.pixels[(3*i)+2] = offColor
             if key_event.released:
                 key = key_event.key_number
                 key_state[key] = False
@@ -306,21 +242,21 @@ while True:
     if macropad.encoder != last_knob_pos:
         if set_up:
             i = 0
-            for i in range(0, 11, 1):
+            for i in range(0, 12, 1):
                 if key_state[i]:
                     if i != 2 and i != 5 and i != 8 and i != 11:
                         key_param[i] += macropad.encoder - last_knob_pos
                         key_param[i] = min(max(key_param[i], 0), 55)
                         macropad.pixels[i] = tempera_ccs[key_param[i]][2]
                         cc_nums[i] = tempera_ccs[key_param[i]][0]
-                        for j in range(0, 3, 1):
+                        for j in range(0, 4, 1):
                             cc_vals[j][i] = tempera_ccs[key_param[i]][3]
             if not any(key_state):
                 chan += macropad.encoder - last_knob_pos
                 chan = min(max(chan, 0), 15)
         else:
             i = 0
-            for i in range(0, 11, 1):
+            for i in range(0, 12, 1):
                 if key_state[i]:
                     cc_vals[scIndex][i] += macropad.encoder - last_knob_pos
                     cc_vals[scIndex][i] = min(max(cc_vals[scIndex][key], 0), 127)
@@ -329,16 +265,9 @@ while True:
 
     # scene checker and switcher
     if scIndex != scTest:
-        macropad.midi.send(macropad.ControlChange(cc_nums[0], cc_vals[scIndex][0]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[1], cc_vals[scIndex][1]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[3], cc_vals[scIndex][3]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[4], cc_vals[scIndex][4]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[6], cc_vals[scIndex][6]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[7], cc_vals[scIndex][7]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[9], cc_vals[scIndex][9]), chan)
-        macropad.midi.send(macropad.ControlChange(cc_nums[10], cc_vals[scIndex][10]), chan)
+        for i in range(0, 8, 1):
+            macropad.midi.send(macropad.ControlChange(cc_nums[key_ind[i]], cc_vals[scIndex][key_ind[i]]), chan)
         scTest = scIndex
-
 
     # print text to the display
 
