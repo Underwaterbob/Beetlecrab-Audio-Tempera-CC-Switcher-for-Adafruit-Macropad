@@ -104,7 +104,7 @@ set_up = False
 # all of the CCs that I need to be able to switch to. Just emitters for now. FX later if things work out.
 
 tempera_ccs = [
-            [18, "rmx", effect, 0], #0
+            [19, "rmx", effect, 0], #0
             [23, "dmx", effect, 0], #1
             [29, "cmx", effect, 0], #2
             [24, "fcu", effect, 127], #3
