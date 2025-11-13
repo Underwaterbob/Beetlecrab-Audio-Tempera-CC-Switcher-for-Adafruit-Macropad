@@ -8,6 +8,11 @@ I can usually make it work. I also like to swear in comments, though I have curb
 
 //DISCLAIMER
 
+On Version 4. CC morph is enabled (and can't be disabled as of yet.) To morph: choose a scene you're not on. The display will show you you are morphing (M) from scene 1 to 2
+for example. Turn the encoder to the right to morph forwards. Turn it backwards to morph backwards. Once you hit either extreme, you are then locked into that scene. Scene
+keys should brighten and darken respectively as you get further or closer to their values. Whee!
+
+
 ** Up to version 3, now. Saves are fixed and fixed again. MIDI channel now also saves on set up exit. I've added FX parameters: reverb, delay, and chorus mix controls, as well as
 filter cutoff and resonance. I've also added modulator amounts 1-10. Orange keys for the former, purple keys for the latter. **
 
