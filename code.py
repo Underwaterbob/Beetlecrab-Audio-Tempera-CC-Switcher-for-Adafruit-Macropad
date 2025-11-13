@@ -1,8 +1,4 @@
 # Underwaterbob's Tempera CC scene morpher. Or switcher. We'll see.
-
-# V4. Morphing exists! It works, but cosmetically still kinda sucks. I'm putting up this branch because I want to
-# start working on making it look better, and I don't want to lose what works. Haha!
-
 # Keys 1, 2, 4, 5, 7, 8, 10, 11 are assigned CCs. Keys 3, 6, 9, 12 are assigned scenes.
 # Two modes: set up and perform. In set up mode. Holding a key and turning the encoder chooses
 # a CC# for that key. Holding a scene key and turning the encoder chooses a morph time (maybe not yet)
@@ -208,6 +204,12 @@ rng_val = [0, 0, 0, 0, 0, 0, 0, 0]
 incre_val = 0
 mid_morph = False
 
+# new display stuff so morphing is more clear as to what values are being sent.
+
+cur_cc_vals = [64, 64, 64, 64, 64, 64, 64, 64]
+
+for i in range(0, 8, 1):
+    cur_cc_vals[i] = cc_vals[0][key_ind[i]]
 
 # Paint the LEDs!
 for i in range(0, 12, 1):
@@ -298,10 +300,10 @@ while True:
 
     # print text to the display
     text_lines[0].text = f"{name_arr[name_ref]}  {incre_val * 5}% {chan + 1}".center(20)
-    text_lines[1].text = f"{tempera_ccs[key_param[0]][1]}: {cc_vals[scTest][0]:{0}{3}}  {tempera_ccs[key_param[1]][1]}: {cc_vals[scTest][1]:{0}{3}}"
-    text_lines[2].text = f"{tempera_ccs[key_param[3]][1]}: {cc_vals[scTest][3]:{0}{3}}  {tempera_ccs[key_param[4]][1]}: {cc_vals[scTest][4]:{0}{3}}"
-    text_lines[3].text = f"{tempera_ccs[key_param[6]][1]}: {cc_vals[scTest][6]:{0}{3}}  {tempera_ccs[key_param[7]][1]}: {cc_vals[scTest][7]:{0}{3}}"
-    text_lines[4].text = f"{tempera_ccs[key_param[9]][1]}: {cc_vals[scTest][9]:{0}{3}}  {tempera_ccs[key_param[10]][1]}: {cc_vals[scTest][10]:{0}{3}}"
+    text_lines[1].text = f"{tempera_ccs[key_param[0]][1]}: {cur_cc_vals[0]:{0}{3}}  {tempera_ccs[key_param[1]][1]}: {cur_cc_vals[1]:{0}{3}}"
+    text_lines[2].text = f"{tempera_ccs[key_param[3]][1]}: {cur_cc_vals[2]:{0}{3}}  {tempera_ccs[key_param[4]][1]}: {cur_cc_vals[3]:{0}{3}}"
+    text_lines[3].text = f"{tempera_ccs[key_param[6]][1]}: {cur_cc_vals[4]:{0}{3}}  {tempera_ccs[key_param[7]][1]}: {cur_cc_vals[5]:{0}{3}}"
+    text_lines[4].text = f"{tempera_ccs[key_param[9]][1]}: {cur_cc_vals[6]:{0}{3}}  {tempera_ccs[key_param[10]][1]}: {cur_cc_vals[7]:{0}{3}}"
     text_lines.show()
 
 
@@ -325,11 +327,13 @@ while True:
                 mid_morph = True
             for i in range(0, 8, 1):
                 cc_value = round(cc_vals[scTest][key_ind[i]] + ((rng_val[i] / 20) * incre_val))
+                cur_cc_vals[i] = cc_value
                 macropad.midi.send(macropad.ControlChange(cc_nums[key_ind[i]], cc_value), chan)
                 #print(cc_value)
             if incre_val == 0 and mid_morph:
                 for i in range(0, 8, 1):
                     macropad.midi.send(macropad.ControlChange(cc_nums[key_ind[i]], cc_vals[scTest][key_ind[i]]), chan)
+                    cur_cc_vals[i] = cc_vals[scTest][key_ind[i]]
                 mid_morph = False
                 morph_st = False
                 morph_init = True
@@ -340,6 +344,7 @@ while True:
             if incre_val == 20:
                 for i in range(0, 8, 1):
                     macropad.midi.send(macropad.ControlChange(cc_nums[key_ind[i]], cc_vals[scIndex][key_ind[i]]), chan)
+                    cur_cc_vals[i] = cc_vals[scIndex][key_ind[i]]
                 macropad.pixels[(scTest*3)+2] = offColor
                 scTest = scIndex
                 morph_st = False
