@@ -35,6 +35,7 @@ key_state = [
 # for iterating through CCs
 
 key_ind = [0, 1, 3, 4, 6, 7, 9, 10]
+rev_key_ind = [0, 1, 0, 2, 3, 0, 4, 5, 0, 6, 7, 0]
 
 # MIDI channel defaults to 4 because of my Tempera habits. Which is 3 because of zero indexing.
 
@@ -287,6 +288,7 @@ while True:
                 if key_state[i]:
                     cc_vals[scIndex][i] += macropad.encoder - last_knob_pos
                     cc_vals[scIndex][i] = min(max(cc_vals[scIndex][key], 0), 127)
+                    cur_cc_vals[rev_key_ind[i]] = cc_vals[scIndex][i]
                     macropad.midi.send(macropad.ControlChange(cc_nums[i], cc_vals[scIndex][i]), chan)
         if not morph_st:
             last_knob_pos = macropad.encoder
